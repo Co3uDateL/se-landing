@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Среда решений — платформа для реальных кейсов</title>
+  <!-- Легковесный иконочный шрифт (Phosphor) через CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
+  <style>
+    /* ===== CSS переменные ===== */
+    :root {
+      --background: #0C0A09;
+      --foreground: #FAFAF9;
+      --primary: #E7E5E4;
+      --secondary: #292524;
+      --muted: #292524;
+      --accent: #292524;
+      --border: #32302F;
+      --chart-1: #53EAFD;
+      --chart-2: #53EAFD;
+      --chart-3: #0092B8;
+      --chart-4: #007595;
+      --chart-5: #005F78;
+      --primary-foreground: #0C0A09;
+      --ring: #53EAFD;
+      --radius: 0.75rem;
+      --radius-sm: 0.5rem;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --transition: 0.2s ease;
+      --header-height: 64px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      overflow-x: hidden; /* предотвращает горизонтальный скролл */
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.5;
+      font-size: 16px;
+      min-width: 320px;
+      overflow-x: hidden; /* двойная страховка */
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    .section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: var(--foreground);
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--primary);
+      opacity: 0.85;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+      white-space: nowrap;
+      user-select: none;
+      background: none;
+      color: inherit;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background-color: var(--chart-1);
+      color: var(--primary-foreground);
+      border-color: var(--chart-1);
+      font-weight: 600;
+    }
+    .btn-primary:hover {
+      background-color: #3DD8E9;
+      border-color: #3DD8E9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border-color: var(--border);
+      color: var(--foreground);
+    }
+    .btn-secondary:hover {
+      background-color: var(--secondary);
+      border-color: var(--primary);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--foreground);
+    }
+    .btn-outline:hover {
+      background: var(--secondary);
+      border-color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      background-color: rgba(12, 10, 9, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: background-color 0.3s;
+    }
+    .header.scrolled {
+      background-color: rgba(12, 10, 9, 0.95);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .logo i {
+      font-size: 1.5rem;
+      color: var(--chart-1);
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--primary);
+      transition: color var(--transition);
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+    }
+    .nav a:hover {
+      color: var(--foreground);
+    }
+
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 26px;
+      height: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 110;
+    }
+    .burger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--foreground);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .burger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .burger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Мобильное меню — исправлено: используем transform вместо right */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: 0;               /* прижато к правому краю */
+      width: 75%;
+      max-width: 320px;
+      height: 100vh;
+      background: var(--background);
+      border-left: 1px solid var(--border);
+      padding: 5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      z-index: 105;
+      box-shadow: -8px 0 24px rgba(0,0,0,0.6);
+      transform: translateX(100%); /* скрыто за пределами */
+      transition: transform 0.35s ease;
+      will-change: transform;
+    }
+    .mobile-nav.open {
+      transform: translateX(0); /* выезжает */
+    }
+    .mobile-nav a {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--foreground);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 3rem 0 5rem;
+    }
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .hero-content {
+      max-width: 560px;
+    }
+    .hero-content h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--primary);
+      opacity: 0.9;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-metrics {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.9rem;
+      color: var(--primary);
+      opacity: 0.8;
+    }
+    .hero-metrics span {
+      font-weight: 700;
+      color: var(--chart-1);
+      font-size: 1.2rem;
+      display: block;
+    }
+
+    .hero-visual {
+      position: relative;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .floating-cards {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .float-card {
+      position: absolute;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+    .float-card:nth-child(1) { top: 10%; left: 5%; width: 55%; transform: rotate(-2deg); z-index: 3; }
+    .float-card:nth-child(2) { top: 30%; right: 0; width: 50%; transform: rotate(3deg); z-index: 2; }
+    .float-card:nth-child(3) { bottom: 10%; left: 15%; width: 60%; transform: rotate(-1deg); z-index: 1; }
+    .float-card .card-title { font-weight: 600; color: var(--foreground); margin-bottom: 0.3rem; }
+    .float-card .card-meta { font-size: 0.7rem; opacity: 0.7; }
+
+    /* О платформе */
+    .about-scheme {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 2.5rem 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .scheme-node {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.5rem 1.2rem;
+      color: var(--foreground);
+      white-space: nowrap;
+    }
+    .scheme-arrow {
+      font-size: 1.4rem;
+      color: var(--chart-1);
+      margin: 0 0.2rem;
+    }
+    .value-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .value-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .value-card i {
+      font-size: 2rem;
+      color: var(--chart-1);
+      margin-bottom: 0.5rem;
+    }
+    .value-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .value-card p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* Как это работает */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .step-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1.25rem;
+      text-align: center;
+    }
+    .step-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(0, 95, 120, 0.4);
+      border: 1px solid var(--chart-3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--chart-1);
+    }
+    .step-card h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .step-card p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* Роли */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .role-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .role-card h4 {
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .role-card h4 i {
+      color: var(--chart-1);
+    }
+    .role-card ul {
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    .role-card ul li {
+      font-size: 0.9rem;
+      padding: 0.25rem 0;
+      opacity: 0.85;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+    .role-card ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--chart-1);
+    }
+    .role-card .btn {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+
+    /* Опыт (первый идеатон) */
+    .experience-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .exp-photo {
+      aspect-ratio: 4 / 3;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+    .exp-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .exp-description {
+      max-width: 700px;
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* Блок доверия */
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 1.25rem;
+      margin: 2rem 0;
+    }
+    .partner-logo {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 0.5rem;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+    .metrics-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--chart-1);
+      line-height: 1;
+    }
+    .metric-label {
+      font-size: 0.95rem;
+      opacity: 0.8;
+      margin-top: 0.25rem;
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .review-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--chart-5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--chart-1);
+      font-size: 1rem;
+      overflow: hidden;
+    }
+    .review-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .review-name {
+      font-weight: 600;
+    }
+    .review-role {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+    .review-text {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      font-style: italic;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, var(--chart-5) 0%, var(--background) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-section .container {
+      max-width: 640px;
+    }
+    .cta-section h2 {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    .cta-section p {
+      opacity: 0.9;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--primary);
+      opacity: 0.8;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .footer-col h4 {
+      color: var(--foreground);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .footer-col a,
+    .footer-col p {
+      display: block;
+      margin: 0.25rem 0;
+      color: var(--primary);
+    }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    /* Адаптив */
+    @media (max-width: 900px) {
+      .steps-grid,
+      .roles-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+      }
+      .hero-visual {
+        height: 250px;
+        order: -1;
+      }
+      .nav {
+        display: none;
+      }
+      .burger {
+        display: flex;
+      }
+      .steps-grid,
+      .roles-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-title {
+        font-size: 1.75rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .hero-metrics {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .metrics-row {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ==================== HEADER ==================== -->
+  <header class="header" id="header">
+    <div class="container">
+      <a href="#" class="logo">
+        <i class="ph ph-intersect"></i> Среда решений
+      </a>
+      <nav class="nav" id="desktopNav">
+        <a href="#about">О платформе</a>
+        <a href="#how">Как это работает</a>
+        <a href="#experience">Опыт</a>
+        <a href="#trust">Партнеры</a>
+      </nav>
+      <button class="burger" id="burgerBtn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Мобильное меню (исправлено) -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about">О платформе</a>
+      <a href="#how">Как это работает</a>
+      <a href="#experience">Опыт</a>
+      <a href="#trust">Партнеры</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== HERO ==================== -->
+    <section class="hero section" id="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Решайте задачи бизнеса, собирайте портфолио</h1>
+          <p class="hero-subtitle">Среда, где студенты, компании и вузы работают над реальными кейсами. Первый идеатон уже прошёл — 50 участников, 5 команд, живые результаты.</p>
+          <div class="hero-buttons">
+            <a href="#cta" class="btn btn-primary">Стать участником</a>
+            <a href="#experience" class="btn btn-secondary">Как это было</a>
+          </div>
+          <div class="hero-metrics">
+            <div><span>1</span> идеатон</div>
+            <div><span>50+</span> участников</div>
+            <div><span>5</span> команд</div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="floating-cards">
+            <div class="float-card">
+              <div class="card-title">Анализ рынка для ритейла</div>
+              <div class="card-meta">Команда из 4 студентов • Хакатон</div>
+            </div>
+            <div class="float-card">
+              <div class="card-title">Чат-бот для поддержки</div>
+              <div class="card-meta">Проект • Дедлайн 15 июня</div>
+            </div>
+            <div class="float-card">
+              <div class="card-title">Оптимизация логистики</div>
+              <div class="card-meta">Бизнес-кейс • 3 участника</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== О ПЛАТФОРМЕ ==================== -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title">Как устроена платформа</h2>
+        <p class="section-subtitle">Соединяем студентов, бизнес и университеты для работы над настоящими задачами.</p>
+        <div class="about-scheme">
+          <span class="scheme-node">Студент</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node">Кейс</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node">Бизнес</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node">ВУЗ</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node">Результат</span>
+        </div>
+        <div class="value-cards">
+          <div class="value-card">
+            <i class="ph ph-student"></i>
+            <h4>Студент</h4>
+            <p>Опыт и портфолио реальных проектов</p>
+          </div>
+          <div class="value-card">
+            <i class="ph ph-briefcase"></i>
+            <h4>Бизнес</h4>
+            <p>Готовые решения и свежий взгляд</p>
+          </div>
+          <div class="value-card">
+
+            <i class="ph ph-building"></i>
+            <h4>ВУЗ</h4>
+            <p>Практическое обучение студентов</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== КАК ЭТО РАБОТАЕТ ==================== -->
+    <section class="section" id="how">
+      <div class="container">
+        <h2 class="section-title">Как это работает</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-icon">1</div>
+            <h4>Бизнес размещает кейс</h4>
+            <p>Компания описывает задачу и критерии успеха</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">2</div>
+            <h4>Студенты подают заявки</h4>
+            <p>Участники выбирают интересные кейсы и регистрируются</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">3</div>
+            <h4>Формируются команды</h4>
+            <p>Ребята объединяются в команды и начинают работу</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">4</div>
+            <h4>Защита и оценка</h4>
+            <p>Решения презентуются бизнесу, получают обратную связь</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== РОЛИ ==================== -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Кому подходит платформа</h2>
+        <div class="roles-grid">
+          <div class="role-card">
+            <h4><i class="ph ph-user"></i> Студент</h4>
+            <ul>
+              <li>Реальные кейсы в портфолио</li>
+              <li>Командная работа</li>
+              <li>Шанс получить оффер</li>
+            </ul>
+            <a href="#cta" class="btn btn-primary btn-sm">Стать участником</a>
+          </div>
+          <div class="role-card">
+            <h4><i class="ph ph-buildings"></i> Бизнес</h4>
+            <ul>
+              <li>Решение задач без найма</li>
+              <li>Свежий взгляд</li>
+              <li>Доступ к талантам</li>
+            </ul>
+            <a href="#" class="btn btn-outline btn-sm">Разместить кейс</a>
+          </div>
+          <div class="role-card">
+            <h4><i class="ph ph-graduation-cap"></i> ВУЗ</h4>
+            <ul>
+              <li>Практика для студентов</li>
+              <li>Повышение рейтинга</li>
+              <li>Связь с бизнесом</li>
+            </ul>
+          </div>
+          <div class="role-card">
+            <h4><i class="ph ph-chalkboard-teacher"></i> Куратор</h4>
+            <ul>
+              <li>Наставничество</li>
+              <li>Участие в проектах</li>
+              <li>Экспертность</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ОПЫТ (ПЕРВЫЙ ИДЕАТОН) ==================== -->
+    <section class="section" id="experience">
+      <div class="container">
+        <h2 class="section-title">Первый идеатон: как это было</h2>
+        <p class="section-subtitle">50 участников, 5 команд, одна реальная задача от бизнеса. Фотографии с места событий.</p>
+        <div class="experience-gallery">
+          <div class="exp-photo">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23292524'/%3E%3Ctext x='200' y='160' font-size='18' fill='%23E7E5E4' text-anchor='middle' font-family='system-ui'%3EФото 1%3C/text%3E%3C/svg%3E" alt="Работа в команде">
+          </div>
+          <div class="exp-photo">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23292524'/%3E%3Ctext x='200' y='160' font-size='18' fill='%23E7E5E4' text-anchor='middle' font-family='system-ui'%3EФото 2%3C/text%3E%3C/svg%3E" alt="Презентация решений">
+          </div>
+          <div class="exp-photo">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23292524'/%3E%3Ctext x='200' y='160' font-size='18' fill='%23E7E5E4' text-anchor='middle' font-family='system-ui'%3EФото 3%3C/text%3E%3C/svg%3E" alt="Обсуждение с куратором">
+          </div>
+        </div>
+        <div class="exp-description">
+          <p>Мы собрали 50 студентов, дали реальный кейс от партнёра и двое суток работы. Команды сами распределили роли, провели исследование, подготовили прототипы. В конце — защита перед бизнесом. Лучшие решения уже внедряются. Смотрите фото, читайте отзывы участников ниже.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== БЛОК ДОВЕРИЯ ==================== -->
+    <section class="section" id="trust">
+      <div class="container">
+        <h2 class="section-title">Нам доверяют</h2>
+        <div class="partners-grid">
+          <div class="partner-logo">СберТех</div>
+          <div class="partner-logo">Ozon</div>
+          <div class="partner-logo">Яндекс</div>
+          <div class="partner-logo">МТС</div>
+          <div class="partner-logo">Росатом</div>
+          <div class="partner-logo">ВТБ</div>
+          <div class="partner-logo">X5 Group</div>
+          <div class="partner-logo">Авито</div>
+        </div>
+
+        <div class="metrics-row">
+          <div><div class="metric-value">1</div><div class="metric-label">идеатон проведён</div></div>
+          <div><div class="metric-value">50+</div><div class="metric-label">студентов</div></div>
+          <div><div class="metric-value">5</div><div class="metric-label">команд</div></div>
+          <div><div class="metric-value">1</div><div class="metric-label">реальный кейс</div></div>
+        </div>
+
+        <h2 class="section-title" style="margin-top:1rem;">Отзывы участников</h2>
+        <div class="reviews-grid" id="reviewsGrid">
+          <!-- Генерируется JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CTA ==================== -->
+    <section class="section cta-section" id="cta">
+      <div class="container">
+        <h2>Присоединяйтесь к следующему кейсу</h2>
+        <p>Получите опыт, который ценят работодатели, и положите в портфолио живой проект.</p>
+        <a href="#" class="btn btn-primary" style="font-size:1.1rem; padding:0.9rem 2.5rem;">Зарегистрироваться</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>О платформе</h4>
+          <a href="#about">Как это работает</a>
+          <a href="#experience">Опыт</a>
+        </div>
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <p>info@sreda-resheniy.ru</p>
+          <p>+7 (999) 123-45-67</p>
+        </div>
+        <div class="footer-col">
+          <h4>Соцсети</h4>
+          <a href="#">Telegram</a>
+          <a href="#">VK</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <a href="#">Политика конфиденциальности</a> • © 2025 Среда решений
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const appConfig = {
+        headerOffset: 64,
+      };
+
+      const reviews = [
+        { name: 'Анна М.', role: 'Студентка', text: 'Первый реальный проект в портфолио! Команда была отличная.', photo: null },
+        { name: 'Игорь К.', role: 'Бизнес-партнёр', text: 'Получили неожиданно глубокий анализ и свежие идеи.', photo: null },
+        { name: 'Елена В.', role: 'Куратор', text: 'Приятно видеть, как студенты растут на реальных задачах.', photo: null }
+      ];
+
+      const utils = {
+        debounce(fn, delay) {
+          let timer;
+          return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn(...args), delay);
+          };
+        },
+        scrollToElement(id) {
+          const el = document.getElementById(id);
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.pageYOffset - appConfig.headerOffset - 10;
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        }
+      };
+
+      class App {
+        constructor() {
+          this.init();
+        }
+
+        init() {
+          this.cacheElements();
+          this.renderReviews();
+          this.setupEventListeners();
+          this.initHeaderScroll();
+        }
+
+        cacheElements() {
+          this.header = document.getElementById('header');
+          this.burgerBtn = document.getElementById('burgerBtn');
+          this.mobileNav = document.getElementById('mobileNav');
+          this.reviewsGrid = document.getElementById('reviewsGrid');
+          this.allAnchorLinks = document.querySelectorAll('a[href^="#"]');
+        }
+
+        renderReviews() {
+          if (!this.reviewsGrid) return;
+          this.reviewsGrid.innerHTML = reviews.map(r => `
+            <div class="review-card">
+              <div class="review-author">
+                <div class="review-avatar">
+                  ${r.photo ? `<img src="${r.photo}" alt="${r.name}">` : r.name.charAt(0)}
+                </div>
+                <div>
+                  <div class="review-name">${r.name}</div>
+                  <div class="review-role">${r.role}</div>
+                </div>
+              </div>
+              <p class="review-text">«${r.text}»</p>
+            </div>
+          `).join('');
+        }
+
+        setupEventListeners() {
+          this.burgerBtn.addEventListener('click', () => this.toggleMobileMenu());
+
+          this.mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+              this.closeMobileMenu();
+              const targetId = link.getAttribute('href').replace('#', '');
+              utils.scrollToElement(targetId);
+            });
+          });
+
+          this.allAnchorLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+              const href = link.getAttribute('href');
+              if (href.startsWith('#') && href.length > 1) {
+                e.preventDefault();
+                const id = href.substring(1);
+                utils.scrollToElement(id);
+                this.closeMobileMenu();
+              }
+            });
+          });
+
+          document.addEventListener('click', (e) => {
+            if (this.mobileNav.classList.contains('open') &&
+                !this.mobileNav.contains(e.target) &&
+                !this.burgerBtn.contains(e.target)) {
+              this.closeMobileMenu();
+            }
+          });
+        }
+
+        toggleMobileMenu() {
+          this.mobileNav.classList.toggle('open');
+          this.burgerBtn.classList.toggle('active');
+        }
+
+        closeMobileMenu() {
+          this.mobileNav.classList.remove('open');
+          this.burgerBtn.classList.remove('active');
+        }
+
+        initHeaderScroll() {
+          const scrollHandler = utils.debounce(() => {
+            this.header.classList.toggle('scrolled', window.scrollY > 20);
+          }, 50);
+          window.addEventListener('scroll', scrollHandler);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        window.caseApp = new App();
+      });
+    })();
+  </script>
+</body>
+</html>
