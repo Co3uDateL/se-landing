@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Среда решений — платформа для реальных кейсов</title>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
+  <link rel="icon" type="image/png" href="landing/favicon.png">
   <style>
     /* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СБРОС ===== */
     :root {
@@ -50,6 +50,13 @@
       font-size: 16px;
       min-width: 320px;
       overflow-x: hidden;           /* ← главное исправление: убирает горизонтальную прокрутку */
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-right: 12px;
     }
 
     img {
@@ -671,6 +678,7 @@
   <header class="header" id="header">
     <div class="container">
       <a href="#" class="logo">
+        <img src="landing/favicon.png" alt="Среда решений" class="logo-icon">
         <i class="ph ph-intersect"></i> Среда решений
       </a>
       <nav class="nav" id="desktopNav">
