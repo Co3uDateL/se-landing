@@ -625,29 +625,27 @@
       }
     }
     @media (max-width: 768px) {
-      .hero .container {
-        grid-template-columns: 1fr;
+      .nav {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: auto;
+        padding: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
       }
-      .hero-visual {
-        height: 250px;
-        order: -1;
-        margin-bottom: 1rem;
+      
+      .nav::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
       }
-      .steps-grid,
-      .roles-grid {
-        grid-template-columns: 1fr;
+      
+      .nav a {
+        white-space: nowrap;
+        font-size: 0.9rem;
       }
-      .section-title { font-size: 1.75rem; }
-      .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
-      .value-cards {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+      
+      .burger {
+        display: none;
       }
-  
-  .value-card {
-    min-width: 0;
-    max-width: 100%;
-  }
     }
     @media (max-width: 480px) {
       .hero-metrics { flex-direction: column; gap: 0.5rem; }
