@@ -265,10 +265,12 @@
       transition: transform 0.35s ease;
       z-index: 105;
       box-shadow: -8px 0 24px rgba(0,0,0,0.6);
-      transform: translateX(100%);    /* ← скрыто за правым краем */
+      transform: translateX(100%);
+      overflow-y: auto;
     }
+
     .mobile-nav.open {
-      transform: translateX(0);       /* ← выезжает */
+      transform: translateX(0);
     }
     .mobile-nav a {
       font-size: 1.1rem;
@@ -653,6 +655,28 @@
       text-align: center;
       font-size: 0.8rem;
     }
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 104;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .mobile-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
 
     /* ===== АДАПТИВ (мобильные) ===== */
     @media (max-width: 900px) {
@@ -936,17 +960,47 @@
       const burger = document.getElementById('burgerBtn');
       const mobileNav = document.getElementById('mobileNav');
       const anchors = document.querySelectorAll('a[href^="#"]');
+      
+      // Создаем оверлей
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      document.body.appendChild(overlay);
+
+      function openMenu() {
+        mobileNav.classList.add('open');
+        burger.classList.add('active');
+        overlay.classList.add('active');
+        document.body.classList.add('menu-open');
+      }
+
+      function closeMenu() {
+        mobileNav.classList.remove('open');
+        burger.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
+      }
 
       burger.addEventListener('click', () => {
-        mobileNav.classList.toggle('open');
-        burger.classList.toggle('active');
+        if (mobileNav.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
       });
 
+      // Закрыть меню при клике на оверлей
+      overlay.addEventListener('click', closeMenu);
+
+      // Закрыть меню при клике на ссылку
       mobileNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileNav.classList.remove('open');
-          burger.classList.remove('active');
-        });
+        link.addEventListener('click', closeMenu);
+      });
+
+      // Закрыть меню при нажатии Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+          closeMenu();
+        }
       });
 
       anchors.forEach(link => {
@@ -959,8 +1013,6 @@
               const offset = 70;
               const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
               window.scrollTo({ top, behavior: 'smooth' });
-              mobileNav.classList.remove('open');
-              burger.classList.remove('active');
             }
           }
         });
