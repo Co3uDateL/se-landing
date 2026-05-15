@@ -217,68 +217,7 @@
       color: var(--foreground);
     }
 
-    /* Бургер (мобильное меню) */
-    .burger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-around;
-      width: 26px;
-      height: 20px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      z-index: 110;
-    }
-    .burger span {
-      display: block;
-      width: 100%;
-      height: 2px;
-      background: var(--foreground);
-      border-radius: 2px;
-      transition: all 0.3s;
-    }
-    .burger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .burger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .burger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
-
-    /* Мобильное меню: теперь скрыто через transform */
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 75%;
-      max-width: 320px;
-      height: 100vh;
-      background: var(--background);
-      border-left: 1px solid var(--border);
-      padding: 5rem 2rem 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      transition: transform 0.35s ease;
-      z-index: 105;
-      box-shadow: -8px 0 24px rgba(0,0,0,0.6);
-      transform: translateX(100%);
-      overflow-y: auto;
-    }
-
-    .mobile-nav.open {
-      transform: translateX(0);
-    }
-    .mobile-nav a {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--foreground);
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
+    
 
     /* ===== HERO ===== */
     .hero {
@@ -694,8 +633,6 @@
         order: -1;
         margin-bottom: 1rem;
       }
-      .nav { display: none; }
-      .burger { display: flex; }
       .steps-grid,
       .roles-grid {
         grid-template-columns: 1fr;
@@ -733,17 +670,7 @@
         <a href="#experience">Опыт</a>
         <a href="#trust">Партнеры</a>
       </nav>
-      <button class="burger" id="burgerBtn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <!-- Мобильная навигация -->
-    <div class="mobile-nav" id="mobileNav">
-      <a href="#about">О платформе</a>
-      <a href="#how">Как это работает</a>
-      <a href="#experience">Опыт</a>
-      <a href="#trust">Партнеры</a>
-    </div>
+    </div>    
   </header>
 
   <main>
@@ -957,52 +884,8 @@
     // ===== 1. Модуль: мобильное меню и плавный скроллинг =====
     (function() {
       const header = document.getElementById('header');
-      const burger = document.getElementById('burgerBtn');
-      const mobileNav = document.getElementById('mobileNav');
       const anchors = document.querySelectorAll('a[href^="#"]');
-      
-      // Создаем оверлей
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      document.body.appendChild(overlay);
-
-      function openMenu() {
-        mobileNav.classList.add('open');
-        burger.classList.add('active');
-        overlay.classList.add('active');
-        document.body.classList.add('menu-open');
-      }
-
-      function closeMenu() {
-        mobileNav.classList.remove('open');
-        burger.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.classList.remove('menu-open');
-      }
-
-      burger.addEventListener('click', () => {
-        if (mobileNav.classList.contains('open')) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
-      });
-
-      // Закрыть меню при клике на оверлей
-      overlay.addEventListener('click', closeMenu);
-
-      // Закрыть меню при клике на ссылку
-      mobileNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-      });
-
-      // Закрыть меню при нажатии Escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
-          closeMenu();
-        }
-      });
-
+    
       anchors.forEach(link => {
         link.addEventListener('click', (e) => {
           const href = link.getAttribute('href');
@@ -1017,7 +900,7 @@
           }
         });
       });
-
+    
       window.addEventListener('scroll', () => {
         header.classList.toggle('scrolled', window.scrollY > 20);
       });
