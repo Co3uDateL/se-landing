@@ -949,52 +949,8 @@
     // ===== 1. Модуль: мобильное меню и плавный скроллинг =====
     (function() {
       const header = document.getElementById('header');
-      const burger = document.getElementById('burgerBtn');
-      const mobileNav = document.getElementById('mobileNav');
       const anchors = document.querySelectorAll('a[href^="#"]');
-      
-      // Создаем оверлей
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      document.body.appendChild(overlay);
-
-      function openMenu() {
-        mobileNav.classList.add('open');
-        burger.classList.add('active');
-        overlay.classList.add('active');
-        document.body.classList.add('menu-open');
-      }
-
-      function closeMenu() {
-        mobileNav.classList.remove('open');
-        burger.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.classList.remove('menu-open');
-      }
-
-      burger.addEventListener('click', () => {
-        if (mobileNav.classList.contains('open')) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
-      });
-
-      // Закрыть меню при клике на оверлей
-      overlay.addEventListener('click', closeMenu);
-
-      // Закрыть меню при клике на ссылку
-      mobileNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-      });
-
-      // Закрыть меню при нажатии Escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
-          closeMenu();
-        }
-      });
-
+    
       anchors.forEach(link => {
         link.addEventListener('click', (e) => {
           const href = link.getAttribute('href');
@@ -1009,16 +965,11 @@
           }
         });
       });
-
+    
       window.addEventListener('scroll', () => {
         header.classList.toggle('scrolled', window.scrollY > 20);
       });
     })();
-
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 20);
-  });
-})();
 
     // ===== 2. Модуль: Карусель =====
     (function() {
