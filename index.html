@@ -1,1030 +1,1173 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Среда Решений — практическая подготовка студентов</title>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Среда решений — платформа для реальных кейсов</title>
+  <!-- Иконки Phosphor (лёгкий шрифт) -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
   <style>
+    /* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СБРОС ===== */
     :root {
-      --dark: #1a1c22;
-      --dark2: #22252e;
-      --dark3: #2c3040;
-      --blue: #1d4ed8;
-      --blue-mid: #2563eb;
-      --sky: #38bdf8;
-      --sky-light: #7dd3fc;
-      --white: #f8fafc;
-      --muted: #94a3b8;
-      --lime: #bef264;
+      --background: #0C0A09;
+      --foreground: #FAFAF9;
+      --primary: #E7E5E4;
+      --secondary: #292524;
+      --muted: #292524;
+      --accent: #292524;
+      --border: #32302F;
+      --chart-1: #53EAFD;
+      --chart-2: #53EAFD;
+      --chart-3: #0092B8;
+      --chart-4: #007595;
+      --chart-5: #005F78;
+      --primary-foreground: #0C0A09;
+      --ring: #53EAFD;
+      --radius: 0.75rem;
+      --radius-sm: 0.5rem;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --transition: 0.2s ease;
+      --header-height: 64px;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
 
     body {
-      font-family: 'Onest', sans-serif;
-      background: var(--dark);
-      color: var(--white);
-      overflow-x: hidden;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.5;
+      font-size: 16px;
+      min-width: 320px;
     }
 
-    /* ─── HEADER ─── */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      height: 72px;
-      background: rgba(26,28,34,0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(56,189,248,0.12);
-      transition: box-shadow 0.3s;
+    img {
+      max-width: 100%;
+      display: block;
     }
-    header.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.4); }
 
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    a {
+      color: inherit;
       text-decoration: none;
+      transition: color var(--transition);
     }
-    .logo-icon {
-      width: 48px;
-      height: 48px;
-      flex-shrink: 0;
+
+    ul {
+      list-style: none;
     }
-    .logo-text {
-      display: flex;
-      flex-direction: column;
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
     }
-    .logo-title {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 13px;
+
+    .section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
       font-weight: 700;
-      color: var(--sky);
-      letter-spacing: 0.03em;
-      line-height: 1.1;
-    }
-    .logo-sub {
-      font-size: 10px;
-      color: var(--muted);
-      font-weight: 400;
-      line-height: 1.3;
-      max-width: 200px;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      color: var(--foreground);
+      line-height: 1.2;
     }
 
-    nav { display: flex; gap: 32px; }
-    nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.2s;
-      position: relative;
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 0; height: 2px;
-      background: var(--sky);
-      transition: width 0.3s;
-    }
-    nav a:hover { color: var(--white); }
-    nav a:hover::after { width: 100%; }
-
-    /* ─── HERO ─── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      padding: 120px 5% 80px;
-      overflow: hidden;
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--primary);
+      opacity: 0.85;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
     }
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 70% 40%, rgba(29,78,216,0.25) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 20% 70%, rgba(56,189,248,0.12) 0%, transparent 60%);
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-
-    .hero-content {
-      position: relative;
-      max-width: 750px;
-    }
-
-    .hero-badge {
+    /* ===== КНОПКИ ===== */
+    .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(56,189,248,0.1);
-      border: 1px solid rgba(56,189,248,0.25);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 13px;
-      color: var(--sky);
-      margin-bottom: 28px;
+      justify-content: center;
+      gap: 0.4rem;
       font-weight: 500;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px;
-      background: var(--sky);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    h1 {
-      font-family: 'Unbounded', sans-serif;
-      font-size: clamp(32px, 5vw, 60px);
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-    }
-    h1 span { color: var(--sky); }
-
-    .hero-sub {
-      font-size: clamp(16px, 2vw, 20px);
-      color: var(--muted);
-      line-height: 1.6;
-      max-width: 540px;
-      margin-bottom: 40px;
+      font-size: 0.95rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+      white-space: nowrap;
+      user-select: none;
+      background: none;
+      color: inherit;
+      font-family: inherit;
     }
 
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 16px 36px;
-      background: linear-gradient(135deg, var(--blue-mid), #1e40af);
-      color: #fff;
-      font-family: 'Unbounded', sans-serif;
-      font-size: 14px;
+      background-color: var(--chart-1);
+      color: var(--primary-foreground);
+      border-color: var(--chart-1);
       font-weight: 600;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 8px 32px rgba(37,99,235,0.4);
     }
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(37,99,235,0.55);
+      background-color: #3DD8E9;
+      border-color: #3DD8E9;
+      transform: translateY(-1px);
     }
 
-    .hero-visual {
-      position: absolute;
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: min(42%, 500px);
-      opacity: 0.9;
+    .btn-secondary {
+      background-color: transparent;
+      border-color: var(--border);
+      color: var(--foreground);
+    }
+    .btn-secondary:hover {
+      background-color: var(--secondary);
+      border-color: var(--primary);
     }
 
-    /* static stats row */
-    .hero-stats {
-      display: flex;
-      gap: 0;
-      margin-top: 48px;
-      border: 1px solid rgba(56,189,248,0.15);
-      border-radius: 16px;
-      overflow: hidden;
-      background: rgba(44,48,64,0.5);
-      backdrop-filter: blur(10px);
-      max-width: 480px;
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--foreground);
     }
-    .hero-stat {
-      flex: 1;
-      padding: 20px 24px;
-      border-right: 1px solid rgba(56,189,248,0.1);
-    }
-    .hero-stat:last-child { border-right: none; }
-    .hero-stat-val {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--sky);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .hero-stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.4;
+    .btn-outline:hover {
+      background: var(--secondary);
+      border-color: var(--primary);
     }
 
-    /* orbit decoration */
-    .orbit-wrap {
+    .btn-sm {
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    /* ===== HEADER (шапка) ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      left: 0;
       width: 100%;
-      padding-top: 100%;
-      position: relative;
+      height: var(--header-height);
+      background-color: rgba(12, 10, 9, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: background-color 0.3s;
     }
-    .orbit-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(56,189,248,0.15);
+    .header.scrolled {
+      background-color: rgba(12, 10, 9, 0.95);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
-    .or1 { inset: 20%; }
-    .or2 { inset: 5%; }
-    .or3 { inset: -10%; }
-    .orbit-center {
-      position: absolute;
-      inset: 32%;
-      background: linear-gradient(135deg, var(--blue), var(--sky));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Unbounded', sans-serif;
-      font-size: clamp(10px,2vw,18px);
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      box-shadow: 0 0 60px rgba(56,189,248,0.3);
-    }
-
-    /* ─── SECTION COMMONS ─── */
-    section { padding: 100px 5%; }
-    .section-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--sky);
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    h2 {
-      font-family: 'Unbounded', sans-serif;
-      font-size: clamp(26px, 4vw, 46px);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-    }
-    h2 span { color: var(--sky); }
-
-    /* ─── ABOUT ─── */
-    #about { background: var(--dark2); }
-    .about-intro {
-      font-size: 18px;
-      color: var(--muted);
-      max-width: 600px;
-      line-height: 1.7;
-      margin-bottom: 60px;
-    }
-
-    .flow-diagram {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin: 0 auto 60px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-    }
-    .flow-node {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-    .flow-icon {
-      width: 72px; height: 72px;
-      border-radius: 20px;
-      background: var(--dark3);
-      border: 1px solid rgba(56,189,248,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      position: relative;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .flow-node:hover .flow-icon {
-      border-color: var(--sky);
-      transform: translateY(-4px);
-    }
-    .flow-label {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--white);
-      text-align: center;
-    }
-    .flow-arrow {
-      width: 48px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .flow-arrow svg { color: var(--sky); }
-
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-      gap: 20px;
-    }
-    .val-card {
-      background: var(--dark3);
-      border: 1px solid rgba(56,189,248,0.1);
-      border-radius: 20px;
-      padding: 28px;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .val-card:hover {
-      border-color: rgba(56,189,248,0.4);
-      transform: translateY(-4px);
-    }
-    .val-emoji { font-size: 32px; margin-bottom: 14px; }
-    .val-who {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--sky);
-      margin-bottom: 6px;
-    }
-    .val-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-    /* ─── HOW IT WORKS ─── */
-    #how { background: var(--dark); }
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-      gap: 24px;
-      margin-top: 48px;
-    }
-    .step-card {
-      background: var(--dark2);
-      border: 1px solid rgba(56,189,248,0.1);
-      border-radius: 24px;
-      padding: 32px 28px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .step-card:hover {
-      border-color: rgba(56,189,248,0.35);
-      transform: translateY(-6px);
-    }
-    .step-num {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 64px;
-      font-weight: 900;
-      color: rgba(56,189,248,0.06);
-      position: absolute;
-      top: 16px; right: 20px;
-      line-height: 1;
-      user-select: none;
-    }
-    .step-icon {
-      width: 52px; height: 52px;
-      background: linear-gradient(135deg, var(--blue), #1e3a8a);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin-bottom: 18px;
-    }
-    .step-title {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .step-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-    /* ─── CAROUSEL ─── */
-    #gallery { background: var(--dark2); padding: 80px 0; }
-    .gallery-header { padding: 0 5%; margin-bottom: 40px; }
-
-    .carousel {
-      position: relative;
-      overflow: hidden;
-    }
-    .carousel-track {
-      display: flex;
-      gap: 20px;
-      padding: 0 5%;
-      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    }
-    .carousel-slide {
-      flex-shrink: 0;
-      width: min(360px, 85vw);
-      height: 240px;
-      border-radius: 20px;
-      overflow: hidden;    
-      background: var(--dark3);
-      border: 1px solid rgba(56,189,248,0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      position: relative;
-    }
-    .carousel-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.3s ease;
-    }
-    .slide-label {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 16px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.7));
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.8);
-    }
-
-    .carousel-controls {
-      display: flex;
-      gap: 12px;
-      padding: 24px 5% 0;
-    }
-    .carousel-btn {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 1px solid rgba(56,189,248,0.3);
-      background: var(--dark3);
-      color: var(--sky);
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .carousel-btn:hover { background: rgba(56,189,248,0.15); border-color: var(--sky); }
-
-    /* ─── EVENT ─── */
-    #event { background: var(--dark); }
-    .event-card {
-      background: linear-gradient(135deg, var(--dark2) 0%, var(--dark3) 100%);
-      border: 1px solid rgba(56,189,248,0.15);
-      border-radius: 28px;
-      padding: 56px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: center;
-    }
-    .event-tag {
-      display: inline-block;
-      background: rgba(56,189,248,0.12);
-      border: 1px solid rgba(56,189,248,0.3);
-      border-radius: 100px;
-      padding: 4px 14px;
-      font-size: 12px;
-      color: var(--sky);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
-    }
-    .event-title {
-      font-family: 'Unbounded', sans-serif;
-      font-size: clamp(20px, 3vw, 32px);
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-    .event-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
-    .event-stats {
-      display: flex;
-      gap: 32px;
-    }
-    .event-stat-num {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--sky);
-    }
-    .event-stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
-    .event-visual {
-      background: var(--dark);
-      border-radius: 20px;
-      border: 1px solid rgba(56,189,248,0.1);
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 80px;
-    }
-
-    /* ─── CTA ─── */
-    #cta {
-      background: var(--dark2);
-      text-align: center;
-      padding: 100px 5%;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(29,78,216,0.2) 0%, transparent 70%);
-    }
-    .cta-content { position: relative; max-width: 640px; margin: 0 auto; }
-    #cta h2 { margin-bottom: 16px; }
-    .cta-sub { font-size: 18px; color: var(--muted); margin-bottom: 40px; line-height: 1.6; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--dark);
-      border-top: 1px solid rgba(56,189,248,0.1);
-      padding: 60px 5% 32px;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
-    }
-    .footer-brand .logo-wrap { margin-bottom: 16px; }
-    .footer-brand p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 280px; }
-    .footer-col h4 {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--white);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 16px;
-    }
-    .footer-col a, .footer-col p {
-      display: block;
-      font-size: 14px;
-      color: var(--muted);
-      text-decoration: none;
-      margin-bottom: 10px;
-      transition: color 0.2s;
-      line-height: 1.5;
-    }
-    .footer-col a:hover { color: var(--sky); }
-
-    .socials { display: flex; gap: 12px; margin-top: 4px; }
-    .social-btn {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      border: 1px solid rgba(56,189,248,0.2);
-      background: var(--dark2);
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      text-decoration: none;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .social-btn:hover { color: var(--sky); border-color: var(--sky); }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding-top: 28px;
+    .header .container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
+      height: 100%;
     }
-    .footer-bottom p { font-size: 13px; color: rgba(148,163,184,0.6); }
-    .footer-bottom a { font-size: 13px; color: rgba(148,163,184,0.6); text-decoration: none; }
-    .footer-bottom a:hover { color: var(--sky); }
-
-    /* ─── TAU ─── */
-    .tau-badge {
-      display: inline-flex;
+    .logo {
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--foreground);
+      display: flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(56,189,248,0.06);
-      border: 1px solid rgba(56,189,248,0.15);
-      border-radius: 12px;
-      padding: 10px 16px;
-      margin-top: 16px;
+      gap: 0.3rem;
     }
-    .tau-badge-logo {
-      width: 32px; height: 32px;
-      background: var(--blue);
-      border-radius: 8px;
+    .logo i {
+      font-size: 1.5rem;
+      color: var(--chart-1);
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--primary);
+      transition: color var(--transition);
+      padding: 0.25rem 0;
+      border-bottom: 2px solid transparent;
+    }
+    .nav a:hover {
+      color: var(--foreground);
+    }
+
+    /* Бургер (мобильное меню) */
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 26px;
+      height: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 110;
+    }
+    .burger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--foreground);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .burger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .burger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 75%;
+      max-width: 320px;
+      height: 100vh;
+      background: var(--background);
+      border-left: 1px solid var(--border);
+      padding: 5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: right 0.35s ease;
+      z-index: 105;
+      box-shadow: -8px 0 24px rgba(0,0,0,0.6);
+    }
+    .mobile-nav.open {
+      right: 0;
+    }
+    .mobile-nav a {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--foreground);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 3rem 0 5rem;
+      overflow: hidden;
+    }
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .hero-content {
+      max-width: 560px;
+    }
+    .hero-content h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--primary);
+      opacity: 0.9;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-metrics {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.9rem;
+      color: var(--primary);
+      opacity: 0.8;
+    }
+    .hero-metrics span {
+      font-weight: 700;
+      color: var(--chart-1);
+      font-size: 1.2rem;
+      display: block;
+    }
+
+    .hero-visual {
+      position: relative;
+      width: 100%;
+      height: 380px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Unbounded', sans-serif;
-      font-size: 10px;
+    }
+    .hero-visual canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ===== О ПЛАТФОРМЕ ===== */
+    .about-scheme {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 2.5rem 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .scheme-node {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.5rem 1.2rem;
+      color: var(--foreground);
+      white-space: nowrap;
+    }
+    .scheme-arrow {
+      font-size: 1.4rem;
+      color: var(--chart-1);
+      margin: 0 0.2rem;
+    }
+    .value-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .value-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .value-card i {
+      font-size: 2rem;
+      color: var(--chart-1);
+      margin-bottom: 0.5rem;
+    }
+    .value-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .value-card p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* ===== КАК ЭТО РАБОТАЕТ ===== */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .step-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1.25rem;
+      text-align: center;
+    }
+    .step-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(0, 95, 120, 0.4);
+      border: 1px solid var(--chart-3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
       font-weight: 700;
-      color: #fff;
+      font-size: 1.3rem;
+      color: var(--chart-1);
     }
-    .tau-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
-    .tau-name { font-size: 13px; font-weight: 600; color: var(--white); }
+    .step-card h4 { margin-bottom: 0.5rem; font-size: 1rem; }
+    .step-card p { font-size: 0.9rem; opacity: 0.8; }
 
-    /* ─── ANIMATIONS ─── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    /* ===== РОЛИ ===== */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
+    .role-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .role-card h4 {
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .role-card h4 i { color: var(--chart-1); }
+    .role-card ul { margin-bottom: 1.5rem; flex-grow: 1; }
+    .role-card ul li {
+      font-size: 0.9rem;
+      padding: 0.25rem 0;
+      opacity: 0.85;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+    .role-card ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--chart-1);
+    }
+    .role-card .btn { margin-top: auto; align-self: flex-start; }
+
+    /* ===== ОПЫТ (карусель) ===== */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      margin: 2rem auto 0;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--secondary);
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease;
+      will-change: transform;
+    }
+    .carousel-slide {
+      flex: 0 0 100%;
+      padding: 1rem;
+      text-align: center;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      margin: 0 auto;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: background 0.2s;
+      z-index: 5;
+    }
+    .carousel-btn:hover { background: rgba(83, 234, 253, 0.2); }
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .carousel-dot.active { background: var(--chart-1); }
+
+    /* ===== БЛОК ДОВЕРИЯ ===== */
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 1.25rem;
+      margin: 2rem 0;
+    }
+    .partner-logo {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 0.5rem;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+    .metrics-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--chart-1);
+      line-height: 1;
+    }
+    .metric-label {
+      font-size: 0.95rem;
+      opacity: 0.8;
+      margin-top: 0.25rem;
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .review-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--chart-5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--chart-1);
+      font-size: 1rem;
+      overflow: hidden;
+    }
+    .review-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .review-name { font-weight: 600; }
+    .review-role { font-size: 0.8rem; opacity: 0.7; }
+    .review-text { font-size: 0.9rem; opacity: 0.9; font-style: italic; }
+
+    /* ===== CTA ===== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--chart-5) 0%, var(--background) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-section .container { max-width: 640px; }
+    .cta-section h2 { font-size: 2rem; margin-bottom: 0.75rem; }
+    .cta-section p { opacity: 0.9; margin-bottom: 1.75rem; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--primary);
+      opacity: 0.8;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .footer-col h4 { color: var(--foreground); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .footer-col a,
+    .footer-col p { display: block; margin: 0.25rem 0; color: var(--primary); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+      text-align: center;
+      font-size: 0.8rem;
     }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 1100px) {
-      nav { display: none; }
-      .hero-visual { display: none; }
-      .event-card { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .event-visual { display: none; }
-    }    
-    @media (max-width: 600px) {
-      .footer-top { grid-template-columns: 1fr; }
-      .flow-diagram { gap: 0; }
+    /* ===== АДАПТИВ (мобильные) ===== */
+    @media (max-width: 900px) {
+      .steps-grid,
+      .roles-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+      }
+      .hero-visual {
+        height: 250px;
+        order: -1;
+        margin-bottom: 1rem;
+      }
+      .nav { display: none; }
+      .burger { display: flex; }
+      .steps-grid,
+      .roles-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-title { font-size: 1.75rem; }
+      .carousel-btn { width: 32px; height: 32px; font-size: 1rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-metrics { flex-direction: column; gap: 0.5rem; }
+      .metrics-row { gap: 1.5rem; }
+      .hero-visual { height: 220px; }
     }
   </style>
 </head>
 <body>
-
-<!-- ─── HEADER ─── -->
-<header id="header">
-  <a href="#hero" class="logo-wrap">
-    <svg class="logo-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="48" height="48" rx="10" fill="#1a1c22"/>
-      <!-- dot -->
-      <circle cx="6" cy="38" r="3.5" fill="#38bdf8"/>
-      <!-- mirrored Р (like Я but as P mirrored horizontally) -->
-      <text x="11" y="37" font-family="Arial Black, sans-serif" font-weight="900" font-size="22" fill="#38bdf8" transform="scale(-1,1) translate(-38,0)">P</text>
-      <!-- С -->
-      <text x="27" y="37" font-family="Arial Black, sans-serif" font-weight="900" font-size="22" fill="#7dd3fc">С</text>
-    </svg>
-    <div class="logo-text">
-      <span class="logo-title">СРЕДА РЕШЕНИЙ</span>
-      <span class="logo-sub">практическая подготовка студентов</span>
-    </div>
-  </a>
-  <nav>
-    <a href="#about">О платформе</a>
-    <a href="#how">Как это работает</a>
-    <a href="#event">Кейсы</a>
-  </nav>
-</header>
-
-<!-- ─── HERO ─── -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-content reveal">
-    <div class="hero-badge">
-      <span class="hero-badge-dot"></span>
-      Платформа для практического обучения
-    </div>
-    <h1>Решайте реальные задачи бизнеса и получайте <span>практический опыт</span></h1>
-    <p class="hero-sub">Платформа, где студенты, компании и вузы работают над реальными кейсами и создают измеримые результаты</p>
-    <a href="#cta" class="btn-primary">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 5l7 7-7 7M5 12h15"/></svg>
-      Стать участником
-    </a>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val">100</div>
-        <div class="hero-stat-label">студентов</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">1</div>
-        <div class="hero-stat-label">кейс</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">1</div>
-        <div class="hero-stat-label">компаний</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-visual">
-    <div class="orbit-wrap">
-      <div class="orbit-ring or3"></div>
-      <div class="orbit-ring or2"></div>
-      <div class="orbit-ring or1"></div>
-      <div class="orbit-center">СРЕДА<br>РЕШЕНИЙ</div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── ABOUT ─── -->
-<section id="about">
-  <div class="reveal">
-    <div class="section-label">О платформе</div>
-    <h2>Как <span>работает</span></h2>
-    <p class="about-intro">Мы соединяем студентов, бизнес и вузы для решения реальных задач — создавая ценность для каждой стороны и формируя новое поколение специалистов.</p>
-  </div>
-
-  <div class="flow-diagram reveal">
-    <div class="flow-node">
-      <div class="flow-icon">🎓</div>
-      <div class="flow-label">Студент</div>
-    </div>
-    <div class="flow-arrow">
-      <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M0 12h28M20 4l8 8-8 8"/>
-      </svg>
-    </div>
-    <div class="flow-node">
-      <div class="flow-icon">📋</div>
-      <div class="flow-label">Кейс</div>
-    </div>
-    <div class="flow-arrow">
-      <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M0 12h28M20 4l8 8-8 8"/>
-      </svg>
-    </div>
-    <div class="flow-node">
-      <div class="flow-icon">🏢</div>
-      <div class="flow-label">Бизнес</div>
-    </div>
-    <div class="flow-arrow">
-      <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M0 12h28M20 4l8 8-8 8"/>
-      </svg>
-    </div>
-    <div class="flow-node">
-      <div class="flow-icon">🏛️</div>
-      <div class="flow-label">ВУЗ</div>
-    </div>
-    <div class="flow-arrow">
-      <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M0 12h28M20 4l8 8-8 8"/>
-      </svg>
-    </div>
-    <div class="flow-node">
-      <div class="flow-icon">🏆</div>
-      <div class="flow-label">Результат</div>
-    </div>
-  </div>
-
-  <div class="values-grid reveal">
-    <div class="val-card">
-      <div class="val-emoji">🎓</div>
-      <div class="val-who">Студент</div>
-      <div class="val-desc">Получает реальный опыт и портфолио проектов, которые выделяют его среди соискателей на рынке труда</div>
-    </div>
-    <div class="val-card">
-      <div class="val-emoji">🏢</div>
-      <div class="val-who">Бизнес</div>
-      <div class="val-desc">Получает готовые решения своих актуальных задач и доступ к молодым талантливым специалистам</div>
-    </div>
-    <div class="val-card">
-      <div class="val-emoji">🏛️</div>
-      <div class="val-who">ВУЗ</div>
-      <div class="val-desc">Обеспечивает студентам практическое обучение и укрепляет связи с реальным сектором экономики</div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── HOW IT WORKS ─── -->
-<section id="how">
-  <div class="reveal">
-    <div class="section-label">Процесс</div>
-    <h2>Как это <span>работает</span></h2>
-  </div>
-  <div class="steps-grid">
-    <div class="step-card reveal">
-      <div class="step-num">01</div>
-      <div class="step-icon">📤</div>
-      <div class="step-title">Бизнес размещает кейс</div>
-      <div class="step-desc">Компания описывает реальную бизнес-задачу, которую необходимо решить. Кейсы охватывают маркетинг, аналитику, IT, управление и другие направления.</div>
-    </div>
-    <div class="step-card reveal">
-      <div class="step-num">02</div>
-      <div class="step-icon">📝</div>
-      <div class="step-title">Студенты подают заявки</div>
-      <div class="step-desc">Студенты изучают кейсы и подают заявки на интересующие их проекты, указывая свои компетенции и мотивацию.</div>
-    </div>
-    <div class="step-card reveal">
-      <div class="step-num">03</div>
-      <div class="step-icon">👥</div>
-      <div class="step-title">Команды приступают к работе</div>
-      <div class="step-desc">Формируются межфункциональные команды. Студенты работают над кейсом под кураторством наставников от компании и вуза.</div>
-    </div>
-    <div class="step-card reveal">
-      <div class="step-num">04</div>
-      <div class="step-icon">🎯</div>
-      <div class="step-title">Защита и оценка решений</div>
-      <div class="step-desc">Команды презентуют решения перед экспертами бизнеса. Лучшие проекты внедряются в компаниях, участники получают оценки и рекомендации.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── GALLERY / CAROUSEL ─── -->
-<section id="gallery" style="padding: 80px 0;">
-  <div class="gallery-header reveal">
-    <div class="section-label">Фотогалерея</div>
-    <h2>Моменты <span>мероприятий</span></h2>
-  </div>
-  <div class="carousel">
-    <div class="carousel-track" id="carouselTrack">
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #1e3a8a, #1d4ed8);">
-        <img src="open.jpg" alt="">
-        <div class="slide-label">Открытие первого сезона</div>
-      </div>
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #164e63, #0e7490);">
-        <img src="award.jpg" alt="">
-        <div class="slide-label">Награждение</div>
-      </div>
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #1e3a8a, #0f172a);">
-        <img src="cases.jpg" alt="">
-        <div class="slide-label">Работа над кейсами</div>
-      </div>
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #0c4a6e, #1d4ed8);">
-        <img src="partners.jpg" alt="">
-        <div class="slide-label">Встреча с партнёрами</div>
-      </div>
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #1e40af, #0891b2);">
-        <img src="presetation.jpg" alt="">
-        <div class="slide-label">Презентация решений</div>
-      </div>
-      <div class="carousel-slide" style="background: linear-gradient(135deg, #134e4a, #155e75);">
-        <img src="final.jpg" alt="">
-        <div class="slide-label">Итоговая защита проектов</div>
-      </div>
-    </div>
-  </div>
-  <div class="carousel-controls" style="padding: 24px 5% 0;">
-    <button class="carousel-btn" id="carouselPrev">&#8592;</button>
-    <button class="carousel-btn" id="carouselNext">&#8594;</button>
-  </div>
-</section>
-
-<!-- ─── EVENT ─── -->
-<section id="event">
-  <div class="reveal">
-    <div class="section-label">Первое мероприятие</div>
-    <h2>«Среда Решений» <span>сезон 1</span></h2>
-  </div>
-  <div class="event-card reveal">
-    <div>
-      <div class="event-tag">Завершено успешно</div>
-      <div class="event-title">Первое практико-ориентированное мероприятие прошло в Тольяттинской Академии Управления</div>
-      <p class="event-desc">
-        
-        Идеатон представляет собой формат, в рамках которого компании формулируют актуальные задачи
-        или проблемные кейсы, а команды студентов (18–24 лет) разрабатывают и предлагают решения
-        под руководством экспертов и наставников (тьюторов).
-        В рамках первого идеатона студенты ТАУ работали над реальными задачами партнёра-компании. 
-        Команды под руководством наставников разрабатывали маркетинговые стратегии, проводили анализ рынков. 
-        Финальная защита прошла перед экспертным жюри из представителей бизнеса.
-      </p>
-      <div class="event-stats">
-        <div>
-          <div class="event-stat-num">10</div>
-          <div class="event-stat-label">команд</div>
-        </div>
-        <div>
-          <div class="event-stat-num">1</div>
-          <div class="event-stat-label">кейс</div>
-        </div>
-        <div>
-          <div class="event-stat-num">100</div>
-          <div class="event-stat-label">студентов</div>
-        </div>
-        <div>
-          <div class="event-stat-num">3</div>
-          <div class="event-stat-label">партнёра</div>
-        </div>
-      </div>
-    </div>
-    <div class="event-visual">🏛️</div>
-  </div>
-</section>
-
-<!-- ─── CTA ─── -->
-<section id="cta">
-  <div class="cta-bg"></div>
-  <div class="cta-content reveal">
-    <div class="section-label" style="text-align:center;">Присоединяйтесь</div>
-    <h2>Начните решать реальные кейсы <span>уже сегодня</span></h2>
-    <p class="cta-sub">Получите опыт, портфолио и возможности для карьеры вместе со «Средой Решений»</p>
-    <a href="#" class="btn-primary" style="font-size:15px; padding: 18px 48px;">
-      Зарегистрироваться
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 5l7 7-7 7M5 12h15"/></svg>
-    </a>
-  </div>
-</section>
-
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <a href="#hero" class="logo-wrap">
-        <svg class="logo-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="48" height="48" rx="10" fill="#1a1c22"/>
-          <circle cx="6" cy="38" r="3.5" fill="#38bdf8"/>
-          <text x="11" y="37" font-family="Arial Black, sans-serif" font-weight="900" font-size="22" fill="#38bdf8" transform="scale(-1,1) translate(-38,0)">P</text>
-          <text x="27" y="37" font-family="Arial Black, sans-serif" font-weight="900" font-size="22" fill="#7dd3fc">С</text>
-        </svg>
-        <div class="logo-text">
-          <span class="logo-title">СРЕДА РЕШЕНИЙ</span>
-          <span class="logo-sub">практическая подготовка студентов</span>
-        </div>
+  <!-- ==================== HEADER ==================== -->
+  <header class="header" id="header">
+    <div class="container">
+      <a href="#" class="logo">
+        <i class="ph ph-intersect"></i> Среда решений
       </a>
-      <p>Платформа для практического обучения студентов на реальных задачах бизнеса. Объединяем студентов, компании и вузы.</p>
-      <div class="tau-badge">
-        <div class="tau-badge-logo">ТАУ</div>
-        <div>
-          <div class="tau-name">ТАУ</div>
-          <div class="tau-text">Тольяттинская Академия Управления</div>
+      <nav class="nav" id="desktopNav">
+        <a href="#about">О платформе</a>
+        <a href="#how">Как это работает</a>
+        <a href="#experience">Опыт</a>
+        <a href="#trust">Партнеры</a>
+      </nav>
+      <button class="burger" id="burgerBtn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Мобильная навигация -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about">О платформе</a>
+      <a href="#how">Как это работает</a>
+      <a href="#experience">Опыт</a>
+      <a href="#trust">Партнеры</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== HERO (первый экран) ==================== -->
+    <section class="hero section" id="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Решайте задачи бизнеса, собирайте портфолио</h1>
+          <p class="hero-subtitle">Среда, где студенты, компании и вузы работают над реальными кейсами. Первый идеатон уже прошёл — 50 участников, 5 команд, живые результаты.</p>
+          <div class="hero-buttons">
+            <a href="#cta" class="btn btn-primary">Стать участником</a>
+            <a href="#experience" class="btn btn-secondary">Как это было</a>
+          </div>
+          <div class="hero-metrics">
+            <div><span>1</span> идеатон</div>
+            <div><span>50+</span> участников</div>
+            <div><span>5</span> команд</div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <canvas id="heroCanvas" aria-hidden="true"></canvas>
         </div>
       </div>
-    </div>
-    <div class="footer-col">
-      <h4>О платформе</h4>
-      <a href="#about">Как работает</a>
-      <a href="#how">Процесс</a>
-      <a href="#event">Кейсы</a>
-      <a href="#cta">Стать участником</a>
-    </div>
-    <div class="footer-col">
-      <h4>Контакты</h4>
-      <p>📧 abitur.taom@gmail.com</p>
-      <p>📍 г. Тольятти, Ягодинское лесничество 5</p>
-      <p>🏛️ ТАУ</p>
-    </div>
-    <div class="footer-col">
-      <h4>Соцсети</h4>
-      <div class="socials">
-        <a href="https://vk.ru/taom_ru" class="social-btn" title="ВКонтакте">В</a>
-        <a href="https://t.me/taom_tlt" class="social-btn" title="Telegram">✈</a>
-        <a href="https://taom.academy/" class="social-btn" title="Official website">◻</a>
+    </section>
+
+    <!-- ==================== О ПЛАТФОРМЕ ==================== -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title">Как устроена платформа</h2>
+        <p class="section-subtitle">Соединяем студентов, бизнес и университеты для работы над настоящими задачами.</p>
+        <div class="about-scheme">
+          <span class="scheme-node"><i class="ph ph-user"></i> Студент</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node"><i class="ph ph-briefcase"></i> Кейс</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node"><i class="ph ph-buildings"></i> Бизнес</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node"><i class="ph ph-graduation-cap"></i> ВУЗ</span>
+          <span class="scheme-arrow">→</span>
+          <span class="scheme-node"><i class="ph ph-check-circle"></i> Результат</span>
+        </div>
+        <div class="value-cards">
+          <div class="value-card">
+            <i class="ph ph-student"></i>
+            <h4>Студент</h4>
+            <p>Опыт и портфолио реальных проектов</p>
+          </div>
+          <div class="value-card">
+            <i class="ph ph-briefcase"></i>
+            <h4>Бизнес</h4>
+            <p>Готовые решения и свежий взгляд</p>
+          </div>
+          <div class="value-card">
+            <i class="ph ph-building"></i>
+            <h4>ВУЗ</h4>
+            <p>Практическое обучение студентов</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== КАК ЭТО РАБОТАЕТ ==================== -->
+    <section class="section" id="how">
+      <div class="container">
+        <h2 class="section-title">Как это работает</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-icon">1</div>
+            <h4>Бизнес размещает кейс</h4>
+            <p>Компания описывает задачу и критерии успеха</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">2</div>
+            <h4>Студенты подают заявки</h4>
+            <p>Участники выбирают интересные кейсы и регистрируются</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">3</div>
+            <h4>Формируются команды</h4>
+            <p>Ребята объединяются в команды и начинают работу</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">4</div>
+            <h4>Защита и оценка</h4>
+            <p>Решения презентуются бизнесу, получают обратную связь</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== РОЛИ ==================== -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Кому подходит платформа</h2>
+        <div class="roles-grid">
+          <div class="role-card">
+            <h4><i class="ph ph-user"></i> Студент</h4>
+            <ul>
+              <li>Реальные кейсы в портфолио</li>
+              <li>Командная работа</li>
+              <li>Шанс получить оффер</li>
+            </ul>
+            <a href="#cta" class="btn btn-primary btn-sm">Стать участником</a>
+          </div>
+          <div class="role-card">
+            <h4><i class="ph ph-buildings"></i> Бизнес</h4>
+            <ul>
+              <li>Решение задач без найма</li>
+              <li>Свежий взгляд</li>
+              <li>Доступ к талантам</li>
+            </ul>
+            <a href="#" class="btn btn-outline btn-sm">Разместить кейс</a>
+          </div>
+          <div class="role-card">
+            <h4><i class="ph ph-graduation-cap"></i> ВУЗ</h4>
+            <ul>
+              <li>Практика для студентов</li>
+              <li>Повышение рейтинга</li>
+              <li>Связь с бизнесом</li>
+            </ul>
+          </div>
+          <div class="role-card">
+            <h4><i class="ph ph-chalkboard-teacher"></i> Куратор</h4>
+            <ul>
+              <li>Наставничество</li>
+              <li>Участие в проектах</li>
+              <li>Экспертность</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ОПЫТ (карусель с фото) ==================== -->
+    <section class="section" id="experience">
+      <div class="container">
+        <h2 class="section-title">Первый идеатон: как это было</h2>
+        <p class="section-subtitle">50 участников, 5 команд, одна реальная задача от бизнеса. Фотографии с места событий.</p>
+        
+        <!-- Карусель -->
+        <div class="carousel" id="carousel">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Слайды будут заполнены через JS, но для примера три заглушки -->
+            <div class="carousel-slide">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23292524'/%3E%3Ctext x='300' y='210' font-size='22' fill='%23E7E5E4' text-anchor='middle' font-family='system-ui'%3EРабота в команде%3C/text%3E%3C/svg%3E" alt="Команда за работой">
+            </div>
+            <div class="carousel-slide">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23292524'/%3E%3Ctext x='300' y='210' font-size='22' fill='%23E7E5E4' text-anchor='middle' font-family='system-ui'%3EПрезентация решений%3C/text%3E%3C/svg%3E" alt="Презентация проекта">
+            </div>
+            <div class="carousel-slide">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23292524'/%3E%3Ctext x='300' y='210' font-size='22' fill='%23E7E5E4' text-anchor='middle' font-family='system-ui'%3EОбсуждение с куратором%3C/text%3E%3C/svg%3E" alt="Обсуждение с куратором">
+            </div>
+          </div>
+          <button class="carousel-btn prev" id="carouselPrev">&#10094;</button>
+          <button class="carousel-btn next" id="carouselNext">&#10095;</button>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+
+        <div class="exp-description" style="max-width:700px; margin: 1.5rem auto 0; text-align: center; opacity: 0.9;">
+          <p>Мы собрали 50 студентов, дали реальный кейс от партнёра и двое суток работы. Команды сами распределили роли, провели исследование, сделали прототипы. Лучшие решения уже внедряются. Смотрите фото, читайте отзывы участников ниже.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== БЛОК ДОВЕРИЯ ==================== -->
+    <section class="section" id="trust">
+      <div class="container">
+        <h2 class="section-title">Нам доверяют</h2>
+        <div class="partners-grid">
+          <div class="partner-logo">СберТех</div>
+          <div class="partner-logo">Ozon</div>
+          <div class="partner-logo">Яндекс</div>
+          <div class="partner-logo">МТС</div>
+          <div class="partner-logo">Росатом</div>
+          <div class="partner-logo">ВТБ</div>
+          <div class="partner-logo">X5 Group</div>
+          <div class="partner-logo">Авито</div>
+        </div>
+
+        <div class="metrics-row">
+          <div><div class="metric-value">1</div><div class="metric-label">идеатон проведён</div></div>
+          <div><div class="metric-value">50+</div><div class="metric-label">студентов</div></div>
+          <div><div class="metric-value">5</div><div class="metric-label">команд</div></div>
+          <div><div class="metric-value">1</div><div class="metric-label">реальный кейс</div></div>
+        </div>
+
+        <h2 class="section-title" style="margin-top:1rem;">Отзывы участников</h2>
+        <div class="reviews-grid" id="reviewsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ==================== CTA ==================== -->
+    <section class="section cta-section" id="cta">
+      <div class="container">
+        <h2>Присоединяйтесь к следующему кейсу</h2>
+        <p>Получите опыт, который ценят работодатели, и положите в портфолио живой проект.</p>
+        <a href="#" class="btn btn-primary" style="font-size:1.1rem; padding:0.9rem 2.5rem;">Зарегистрироваться</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>О платформе</h4>
+          <a href="#about">Как это работает</a>
+          <a href="#experience">Опыт</a>
+        </div>
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <p>info@sreda-resheniy.ru</p>
+          <p>+7 (999) 123-45-67</p>
+        </div>
+        <div class="footer-col">
+          <h4>Соцсети</h4>
+          <a href="#">Telegram</a>
+          <a href="#">VK</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <a href="#">Политика конфиденциальности</a> • © 2025 Среда решений
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Среда Решений. Все права защищены.</p>
-    <a href="#">Политика конфиденциальности</a>
-  </div>
-</footer>
+  </footer>
 
-<script>
-  // ─── Sticky header shadow
-  const header = document.getElementById('header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 20);
-  });
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // ===== 1. Модуль: мобильное меню и плавный скроллинг =====
+    (function() {
+      const header = document.getElementById('header');
+      const burger = document.getElementById('burgerBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      const anchors = document.querySelectorAll('a[href^="#"]');
 
-  // ─── Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        observer.unobserve(e.target);
+      // Бургер-меню
+      burger.addEventListener('click', () => {
+        mobileNav.classList.toggle('open');
+        burger.classList.toggle('active');
+      });
+
+      // Закрытие меню при клике на ссылку
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileNav.classList.remove('open');
+          burger.classList.remove('active');
+        });
+      });
+
+      // Плавный скролл для всех якорей
+      anchors.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          if (href.startsWith('#') && href.length > 1) {
+            e.preventDefault();
+            const target = document.getElementById(href.substring(1));
+            if (target) {
+              const offset = 70; // высота хедера
+              const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+              window.scrollTo({ top, behavior: 'smooth' });
+              // Закроем мобильное меню, если открыто
+              mobileNav.classList.remove('open');
+              burger.classList.remove('active');
+            }
+          }
+        });
+      });
+
+      // Эффект тени при скролле для хедера
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 20);
+      });
+    })();
+
+    // ===== 2. Модуль: Карусель (слайдер) =====
+    (function() {
+      const track = document.getElementById('carouselTrack');
+      const prevBtn = document.getElementById('carouselPrev');
+      const nextBtn = document.getElementById('carouselNext');
+      const dotsContainer = document.getElementById('carouselDots');
+      if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+
+      let currentIndex = 0;
+      const slides = Array.from(track.children);
+      const totalSlides = slides.length;
+
+      // Создаём точки
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.classList.add('carousel-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+      const dots = Array.from(dotsContainer.children);
+
+      function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
       }
-    });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
 
-  // ─── Carousel
-  const track = document.getElementById('carouselTrack');
-  const slides = track.querySelectorAll('.carousel-slide');
-  let current = 0;
-  const slideW = 360 + 20;
+      function goTo(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+        updateCarousel();
+      }
 
-  function goTo(index) {
-    const max = slides.length - Math.floor(track.parentElement.offsetWidth / slideW);
-    current = Math.max(0, Math.min(index, max));
-    track.style.transform = `translateX(-${current * slideW}px)`;
-  }
+      prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
+      nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
 
-  document.getElementById('carouselPrev').addEventListener('click', () => goTo(current - 1));
-  document.getElementById('carouselNext').addEventListener('click', () => goTo(current + 1));
+      // Свайп (touch) для мобильных
+      let touchStartX = 0;
+      track.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      });
+      track.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) goTo(currentIndex + 1);
+          else goTo(currentIndex - 1);
+        }
+      });
 
-  // Auto-scroll carousel
-  setInterval(() => goTo(current + 1 > slides.length - 2 ? 0 : current + 1), 3500);
-</script>
+      // Автопрокрутка (необязательно, можно убрать)
+      // setInterval(() => goTo(currentIndex + 1), 5000);
+    })();
+
+    // ===== 3. Модуль: Живая сеть (Canvas) =====
+    (function() {
+      document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('heroCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const POINT_COUNT = 30;
+        const CONNECTION_DIST = 110;
+        const MOUSE_ATTRACT_DIST = 130;
+        const MOUSE_ATTRACT_FORCE = 0.015;
+        const BASE_SPEED = 0.3;
+
+        let points = [];
+        let mouse = { x: null, y: null, active: false };
+        let width, height;
+
+        function createPoints() {
+          points = [];
+          for (let i = 0; i < POINT_COUNT; i++) {
+            points.push({
+              x: Math.random() * width,
+              y: Math.random() * height,
+              vx: (Math.random() - 0.5) * BASE_SPEED,
+              vy: (Math.random() - 0.5) * BASE_SPEED,
+              radius: 2.2 + Math.random() * 2.8,
+              color: Math.random() < 0.6 ? '#53EAFD' : '#0092B8'
+            });
+          }
+        }
+
+        function resize() {
+          const rect = canvas.parentElement.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return false;
+          width = rect.width;
+          height = rect.height;
+          canvas.width = width * (window.devicePixelRatio || 1);
+          canvas.height = height * (window.devicePixelRatio || 1);
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+          return true;
+        }
+
+        function startAnimation() {
+          if (!resize()) {
+            requestAnimationFrame(startAnimation);
+            return;
+          }
+          createPoints();
+          animate();
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, width, height);
+
+          for (let p of points) {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > width)  p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+
+            if (mouse.active && mouse.x !== null) {
+              const dx = mouse.x - p.x;
+              const dy = mouse.y - p.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < MOUSE_ATTRACT_DIST && dist > 0.1) {
+                const force = (MOUSE_ATTRACT_DIST - dist) / MOUSE_ATTRACT_DIST * MOUSE_ATTRACT_FORCE;
+                p.vx += dx / dist * force;
+                p.vy += dy / dist * force;
+              }
+            }
+
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 1.2) {
+              p.vx = (p.vx / speed) * 1.2;
+              p.vy = (p.vy / speed) * 1.2;
+            }
+          }
+
+          // Рисуем связи
+          ctx.strokeStyle = 'rgba(83, 234, 253, 0.2)';
+          ctx.lineWidth = 0.7;
+          for (let i = 0; i < points.length; i++) {
+            for (let j = i + 1; j < points.length; j++) {
+              const a = points[i], b = points[j];
+              const dx = a.x - b.x, dy = a.y - b.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < CONNECTION_DIST) {
+                ctx.globalAlpha = 1 - dist / CONNECTION_DIST;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
+            }
+          }
+          ctx.globalAlpha = 1;
+
+          // Рисуем точки
+          for (let p of points) {
+            ctx.fillStyle = p.color;
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.shadowBlur = 0;
+
+          requestAnimationFrame(animate);
+        }
+
+        function onMouseMove(e) {
+          const rect = canvas.getBoundingClientRect();
+          mouse.x = e.clientX - rect.left;
+          mouse.y = e.clientY - rect.top;
+          mouse.active = true;
+        }
+        function onMouseLeave() { mouse.active = false; }
+
+        startAnimation();
+        window.addEventListener('resize', () => {
+          resize();
+          createPoints();
+        });
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('mouseleave', onMouseLeave);
+        canvas.addEventListener('touchstart', (e) => e.preventDefault());
+      });
+    })();
+
+    // ===== 4. Модуль: Рендеринг отзывов =====
+    (function() {
+      const reviews = [
+        { name: 'Анна М.', role: 'Студентка', text: 'Первый реальный проект в портфолио! Команда была отличная.', photo: null },
+        { name: 'Игорь К.', role: 'Бизнес-партнёр', text: 'Получили неожиданно глубокий анализ и свежие идеи.', photo: null },
+        { name: 'Елена В.', role: 'Куратор', text: 'Приятно видеть, как студенты растут на реальных задачах.', photo: null }
+      ];
+      const grid = document.getElementById('reviewsGrid');
+      if (!grid) return;
+      grid.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="review-author">
+            <div class="review-avatar">
+              ${r.photo ? `<img src="${r.photo}" alt="${r.name}">` : r.name.charAt(0)}
+            </div>
+            <div>
+              <div class="review-name">${r.name}</div>
+              <div class="review-role">${r.role}</div>
+            </div>
+          </div>
+          <p class="review-text">«${r.text}»</p>
+        </div>
+      `).join('');
+    })();
+  </script>
 </body>
 </html>
