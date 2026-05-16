@@ -473,14 +473,22 @@
       justify-content: center;
       padding: 1.5rem;
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      min-height: 140px;
     }
     .partner-logo img {
-      max-width: 90%;
+      max-width: 100%;
       max-height: 80%;
       object-fit: contain;
       display: block;
+    }
+    .partner-logo img[src=""], 
+    .partner-logo img:not([src]) {
+      display: none;
+    }
+    .partner-logo .logo-text {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.9rem;
     }
     .partner-logo:not(:has(img)) {
       font-weight: 700;
@@ -805,12 +813,14 @@
         <h2 class="section-title">Нам доверяют</h2>
         <div class="partners-grid">
           <div class="partner-logo">            
-            <img src="taom1.png" alt="ТАУ">
+            <img src="taom1.png" alt="ТАУ" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\"logo-text\">ТАУ</span>'">
           </div>
           <div class="partner-logo">
-            <img src="fabrica2.png" alt="Фабрика Красок">
+            <img src="fabrica2.png" alt="Фабрика Красок" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\"logo-text\">Фабрика Красок</span>'">
           </div>
-          <div class="partner-logo">ЦПИС</div>
+          <div class="partner-logo">
+            <span class="logo-text">ЦПИС</span>
+          </div>
         </div>
 
         <div class="metrics-row">
